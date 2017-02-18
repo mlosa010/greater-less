@@ -38,108 +38,108 @@ void setup() // the setup for the program
 void loop() // the infinite loop
 {
   while (done != 1) {
-  gettingValues(unswitchedArray);
-  Serial.println("");
-  Serial.println("Switching polarity.");
-  Serial.println("");
-  relays.switchpolarity();
-  gettingValues(switchedArray);
+    gettingValues(unswitchedArray);
+    Serial.println("");
+    Serial.println("Switching polarity.");
+    Serial.println("");
+    relays.switchpolarity();
+    gettingValues(switchedArray);
 
-  Serial.println("");
-  
-  Serial.println("Printing the unswitched array:");
-  for (i = 0; i < 5; i++) {
-    Serial.println(unswitchedArray[i]);
+    Serial.println("");
+
+    Serial.println("Printing the unswitched array:");
+    for (i = 0; i < 5; i++) {
+      Serial.println(unswitchedArray[i]);
+    }
+
+    Serial.println("");
+
+    Serial.println("Printing the switched array:");
+    for (i = 0; i < 5; i++) {
+      Serial.println(switchedArray[i]);
+    }
+
+    Serial.println("");
+
+    memcpy(unswitchedSort, unswitchedArray, 5 * sizeof(int));
+
+    Serial.println("Printing the to be sorted unswitched array:");
+    for (i = 0; i < 5; i++) {
+      Serial.println(unswitchedSort[i]);
+    }
+
+    Serial.println("");
+
+    bubSort(unswitchedSort);
+
+    memcpy(switchedSort, switchedArray, 5 * sizeof(int));
+
+    Serial.println("Printing the to be sorted switched array:");
+    for (i = 0; i < 5; i++) {
+      Serial.println(switchedSort[i]);
+    }
+
+    Serial.println("");
+
+    bubSort(switchedSort);
+
+    Serial.println("Printing the sorted unswitched array:");
+    for (i = 0; i < 5; i++) {
+      Serial.println(unswitchedSort[i]);
+    }
+
+    Serial.println("");
+
+    Serial.println("Printing the sorted switched array:");
+    for (i = 0; i < 5; i++) {
+      Serial.println(switchedSort[i]);
+    }
+
+    Serial.println("");
+
+    // finding the wire in the haystack
+    for (i = 0; i < 5; i++) {
+      if (unswitchedArray[i] == unswitchedSort[0])
+        unswitchedArray[i] = WIRE;
+      if (unswitchedArray[i] == unswitchedSort[1])
+        unswitchedArray[i] = CAPACITOR;
+      if (unswitchedArray[i] == unswitchedSort[2])
+        unswitchedArray[i] = INDUCTOR;
+      if (unswitchedArray[i] == unswitchedSort[3])
+        unswitchedArray[i] = RESISTOR;
+      if (unswitchedArray[i] == unswitchedSort[4])
+        unswitchedArray[i] = DIODE;
+    }
+
+    Serial.println("Printing out the final unswitched array:");
+    for (i = 0; i < 5; i++) {
+      Serial.println(unswitchedArray[i]);
+    }
+
+    Serial.println("");
+
+    for (i = 0; i < 5; i++) {
+      if (switchedArray[i] == switchedSort[0])
+        switchedArray[i] = RESISTOR;
+      if (switchedArray[i] == switchedSort[1])
+        switchedArray[i] = DIODE;
+      if (switchedArray[i] == switchedSort[2])
+        switchedArray[i] = INDUCTOR;
+      if (switchedArray[i] == switchedSort[3])
+        switchedArray[i] = CAPACITOR;
+      if (switchedArray[i] == switchedSort[4])
+        switchedArray[i] = WIRE;
+    }
+
+    Serial.println("Printing out the final switched array:");
+    for (i = 0; i < 5; i++) {
+      Serial.println(switchedArray[i]);
+    }
+
+    Serial.println("");
+
+    done = 1;
   }
-
-  Serial.println("");
-
-  Serial.println("Printing the switched array:");
-  for (i = 0; i < 5; i++) {
-    Serial.println(switchedArray[i]);
-  }
-
-  Serial.println("");
-
-  memcpy(unswitchedSort, unswitchedArray, 5 * sizeof(int));
-
-  Serial.println("Printing the to be sorted unswitched array:");
-  for (i = 0; i < 5; i++) {
-    Serial.println(unswitchedSort[i]);
-  }
-
-  Serial.println("");
-  
-  bubSort(unswitchedSort);
-
-  memcpy(switchedSort, switchedArray, 5 * sizeof(int));
-
-  Serial.println("Printing the to be sorted switched array:");
-  for (i = 0; i < 5; i++) {
-    Serial.println(switchedSort[i]);
-  }
-
-  Serial.println("");
-  
-  bubSort(switchedSort);
-
-  Serial.println("Printing the sorted unswitched array:");
-  for (i = 0; i < 5; i++) {
-    Serial.println(unswitchedSort[i]);
-  }
-
-  Serial.println("");
-
-  Serial.println("Printing the sorted switched array:");
-  for (i = 0; i < 5; i++) {
-    Serial.println(switchedSort[i]);
-  }
-
-  Serial.println("");
-
-  // finding the wire in the haystack
-  for (i = 0; i < 5; i++) {
-    if (unswitchedArray[i] == unswitchedSort[0])
-      unswitchedArray[i] = WIRE;
-    if (unswitchedArray[i] == unswitchedSort[1])
-      unswitchedArray[i] = CAPACITOR;
-    if (unswitchedArray[i] == unswitchedSort[2])
-      unswitchedArray[i] = INDUCTOR;
-    if (unswitchedArray[i] == unswitchedSort[3])
-      unswitchedArray[i] = RESISTOR;
-    if (unswitchedArray[i] == unswitchedSort[4])
-      unswitchedArray[i] = DIODE;
-  }
-
-  Serial.println("Printing out the final unswitched array:");
-  for (i = 0; i < 5; i++) {
-    Serial.println(unswitchedArray[i]);
-  }
-
-  Serial.println("");
-  
-  for (i = 0; i < 5; i++) {
-    if (switchedArray[i] == switchedSort[0])
-      switchedArray[i] = RESISTOR;
-    if (switchedArray[i] == switchedSort[1])
-      switchedArray[i] = DIODE;
-    if (switchedArray[i] == switchedSort[2])
-      switchedArray[i] = INDUCTOR;
-    if (switchedArray[i] == switchedSort[3])
-      switchedArray[i] = CAPACITOR;
-    if (switchedArray[i] == switchedSort[4])
-      switchedArray[i] = WIRE;
-  }
-
-  Serial.println("Printing out the final switched array:");
-  for (i = 0; i < 5; i++) {
-    Serial.println(switchedArray[i]);
-  }
-
-  Serial.println("");
-    
-done = 1;
-}
 }
 
 void bubSort(int arrToSort[5]) {
