@@ -8,6 +8,7 @@
 
 void bubSort(int arrToSort[5]);
 void gettingValues(int aquiredArray[5]);
+int compArrays(int array1[5], int array2[5]);
 
 int unswitchedArray[5];
 int switchedArray[5];
@@ -138,7 +139,8 @@ void loop() // the infinite loop
 
     Serial.println("");
 
-    done = 1;
+    if (compArrays(unswitchedArray, switchedArray) == 1)
+      done = 1;
   }
 }
 
@@ -174,6 +176,16 @@ void gettingValues(int aquiredArray[5]) {
   }
 }
 
+int compArrays(int array1[5],
+               int array2[5]) // returns 1 if both arrays are equal
+{
+  for (i = 0; i < 5; i++) {
+    if (array1[i] != array2[i])
+      return 0;
+  }
+
+  return 1;
+}
 void read_value(uint8_t pin, struct values *v,
                 RelayBoard *r) // reads the values again?
 {
