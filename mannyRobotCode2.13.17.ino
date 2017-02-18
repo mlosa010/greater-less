@@ -1,17 +1,24 @@
 #include "RelayBoard.h"  //including the header file that was made
 
+#define WIRE 1
+#define RESISTOR 2
+#define CAPACITOR 3
+#define INDUCTOR 4
+#define DIODE 5
+
 int unswitchedArray[5];
 int switchedArray[5];
-int finalArray[5];
-int intermidiatearray[5]; //array holding the buble sorted values
-int x=0;
-int n=0;
-int z=0;
-int k=0;
-int j=0;
+int unswitchedSort[5];
+int switchedSort[5]; //array holding the buble sorted values
+int x = 0;
+int n = 0;
+int z = 0;
+int k = 0;
+int j = 0;
+int i = 0;
 int intermidiateprint= 0;
-int storingIntermidiateArray =0;
-int gettingFinalArray=0;
+int storingswitchedSort =0;
+int gettingunswitchedSort=0;
 int count;
 int temp;
 
@@ -32,7 +39,7 @@ void setup()  //the setup for the program
 
 void loop()  //the infinite loop 
 {
-  while(x<1){
+  while(x<1) {
     for (int i = 0; i < RelayBoard::PINS; i++) {  //the begining of the for loop dets i to n integer
         relays.select(i); //select the relays that are enabled( does it cycle threw here?)
         delay(3000);  //pauses code for 3 seconds
@@ -47,7 +54,7 @@ void loop()  //the infinite loop
     
     }
     while(n<1){
-    Serial.println("");  //I don't know why
+    Serial.println("");
     Serial.println(unswitchedArray[0]);
     Serial.println(unswitchedArray[1]);
     Serial.println(unswitchedArray[2]);
@@ -55,145 +62,67 @@ void loop()  //the infinite loop
     Serial.println(unswitchedArray[4]);
     n=1;
     }
-relays.switchpolarity();
-while(z<1){
-    for (int i = 0; i < RelayBoard::PINS; i++) {  //the begining of the for loop dets i to n integer
-        relays.select(i); //select the relays that are enabled( does it cycle threw here?)
-        delay(3000);  //pauses code for 3 seconds
-        read_value(i, &readings, &relays); //(enter the value from the pins struct?)
-        Serial.print("Reading from ");  //prints the comment in serial data printout
-        Serial.print(i);   //prints what i it is currently on from the struct
-        Serial.print(": ");  //prints the ":" for the reading
-        Serial.println(readings.values[i] * (5.0/1023.0));  //Prints the valueof the reading from a pin then changes it to volts
-        switchedArray[i]=readings.values[i];
-        z=1;
-    }
+  relays.switchpolarity();
+  while(z<1){
+      for (int i = 0; i < RelayBoard::PINS; i++) {  //the begining of the for loop dets i to n integer
+          relays.select(i); //select the relays that are enabled( does it cycle threw here?)
+          delay(3000);  //pauses code for 3 seconds
+          read_value(i, &readings, &relays); //(enter the value from the pins struct?)
+          Serial.print("Reading from ");  //prints the comment in serial data printout
+          Serial.print(i);   //prints what i it is currently on from the struct
+          Serial.print(": ");  //prints the ":" for the reading
+          Serial.println(readings.values[i] * (5.0/1023.0));  //Prints the valueof the reading from a pin then changes it to volts
+          switchedArray[i]=readings.values[i];
+          z=1;
+      }
 
-    while(k<1){
-    Serial.println("");  //I don't know why
-    Serial.println(switchedArray[0]);
-    Serial.println(switchedArray[1]);
-    Serial.println(switchedArray[2]);
-    Serial.println(switchedArray[3]);
-    Serial.println(switchedArray[4]);
-    k=1;
-    }
+      while(k<1){
+      Serial.println("");  //I don't know why
+      Serial.println(switchedArray[0]);
+      Serial.println(switchedArray[1]);
+      Serial.println(switchedArray[2]);
+      Serial.println(switchedArray[3]);
+      Serial.println(switchedArray[4]);
+      k=1;
+      }
 
-memcpy( intermidiatearray, unswitchedArray, 5*sizeof(int) );
+    memcpy( switchedSort, unswitchedArray, 5*sizeof(int) );
 
-
-  while (storingIntermidiateArray<1){
-    
-for(count=0;count<10;count++){
+    while (storingswitchedSort<1) {
+      for(count=0;count<10;count++) {
         // repeat until i= length of list
-        for (int i=0; i<5; i++)
-        {
-            if(intermidiatearray[i] < intermidiatearray[i+1])
-            {  //swap the two elements
-                temp = intermidiatearray[i];
-                intermidiatearray[i]=intermidiatearray[i+1];
-                intermidiatearray[i+1] = temp;
-            }
+        for (int i=0; i<5; i++) {
+          if(switchedSort[i] < switchedSort[i+1]) {  //swap the two elements
+            temp = switchedSort[i];
+            switchedSort[i]=switchedSort[i+1];
+            switchedSort[i+1] = temp;
+          }
         }
-    storingIntermidiateArray++;
-  }
- }
+        storingswitchedSort++;
+      }
+    }
+
   while(intermidiateprint<1){
     Serial.println("");  //I don't know why
-    Serial.println(intermidiatearray[0]);
-    Serial.println(intermidiatearray[1]);
-    Serial.println(intermidiatearray[2]);
-    Serial.println(intermidiatearray[3]);
-    Serial.println(intermidiatearray[4]);
+    Serial.println(switchedSort[0]);
+    Serial.println(switchedSort[1]);
+    Serial.println(switchedSort[2]);
+    Serial.println(switchedSort[3]);
+    Serial.println(switchedSort[4]);
 
-
-//finding the wire in the haystack
-      if (intermidiatearray[0]=unswitchedArray[0]){
-        unswitchedArray[0]=1;
-      }
-      if (intermidiatearray[0]=unswitchedArray[1]){
-        unswitchedArray[1]=1;
-      }
-      if (intermidiatearray[0]=unswitchedArray[2]){
-        unswitchedArray[2]=1;
-      }
-      if (intermidiatearray[0]=unswitchedArray[3]){
-        unswitchedArray[3]=1;
-      }
-      if (intermidiatearray[0]=unswitchedArray[4]){
-        unswitchedArray[4]=1;
-      }
-
-
-      /*finding the inductor in the haystack
-      if (intermidiatearray[1]=unswitchedArray[0]){
-        unswitchedArray[0]=4;
-      }
-      if (intermidiatearray[1]=unswitchedArray[1]){
-        unswitchedArray[1]=4;
-      }
-      if (intermidiatearray[1]=unswitchedArray[2]){
-        unswitchedArray[2]=4;
-      }
-      if (intermidiatearray[1]=unswitchedArray[3]){
-        unswitchedArray[3]=4;
-      }
-      if (intermidiatearray[1]=unswitchedArray[4]){
-        unswitchedArray[4]=4;
-      }
-
-      //finding the resistor in the haystack 
-      if (intermidiatearray[2]=unswitchedArray[0]){
-        unswitchedArray[0]=2;
-      }
-      if (intermidiatearray[2]=unswitchedArray[1]){
-        unswitchedArray[1]=2;
-      }
-      if (intermidiatearray[2]=unswitchedArray[2]){
-        unswitchedArray[2]=2;
-      }
-      if (intermidiatearray[2]=unswitchedArray[3]){
-        unswitchedArray[3]=2;
-      }
-      if (intermidiatearray[2]=unswitchedArray[4]){
-        unswitchedArray[4]=2;
-      }
-
-
-//finding capacitor in the haystack
-      if (intermidiatearray[3]=unswitchedArray[0]){
-        unswitchedArray[0]=3;
-      }
-      if (intermidiatearray[3]=unswitchedArray[1]){
-        unswitchedArray[1]=3;
-      }
-      if (intermidiatearray[3]=unswitchedArray[2]){
-        unswitchedArray[2]=3;
-      }
-      if (intermidiatearray[3]=unswitchedArray[3]){
-        unswitchedArray[3]=3;
-      }
-      if (intermidiatearray[3]=unswitchedArray[4]){
-        unswitchedArray[4]=3;
-      }
-
-
-//finding the diode in the haystack
-      if (intermidiatearray[4]=unswitchedArray[0]){
-        unswitchedArray[0]=5;
-      }
-      if (intermidiatearray[4]=unswitchedArray[1]){
-        unswitchedArray[1]=5;
-      }
-      if (intermidiatearray[4]=unswitchedArray[2]){
-        unswitchedArray[2]=5;
-      }
-      if (intermidiatearray[4]=unswitchedArray[3]){
-        unswitchedArray[3]=5;
-      }
-      if (intermidiatearray[4]=unswitchedArray[4]){
-        unswitchedArray[4]=5;
-      }*/
+    //finding the wire in the haystack
+    for (i = 0;i < 5;i++) {
+      if (unswitchedArray[i] == unswitchedSort[0])
+        unswitchedArray[i] = CAPACITOR;
+      else if (unswitchedArray[i] == unswitchedSort[1])
+        unswitchedArray[i] = RESISTOR;
+      else if (unswitchedArray[i] == unswitchedSort[2])
+        unswitchedArray[i] = DIODE;
+      else if (unswitchedArray[i] == unswitchedSort[3])
+        unswitchedArray[i] = INDUCTOR;
+      else if (unswitchedArray[i] == unswitchedSort[4])
+        unswitchedArray[i] = WIRE;
+    }
 
     Serial.println("");  //I don't know why
     Serial.println(unswitchedArray[0]);
@@ -202,14 +131,34 @@ for(count=0;count<10;count++){
     Serial.println(unswitchedArray[3]);
     Serial.println(unswitchedArray[4]);
 
-    
-    intermidiateprint=1;
+    for (i = 0;i < 5;i++) {
+      if (switchedArray[i] == switchedSort[0])
+        switchedArray[i] = WIRE;
+      else if (switchedArray[i] == switchedSort[1])
+        switchedArray[i] = INDUCTOR;
+      else if (unswitchedArray[i] == switchedSort[2])
+        switchedArray[i] = RESISTOR;
+      else if (unswitchedArray[i] == switchedSort[3])
+        switchedArray[i] = CAPACITOR;
+      else if (switchedArray[i] == switchedSort[4])
+        switchedArray[i] = DIODE;
     }
 
+    Serial.println("");  //I don't know why
+    Serial.println(switchedArray[0]);
+    Serial.println(switchedArray[1]);
+    Serial.println(switchedArray[2]);
+    Serial.println(switchedArray[3]);
+    Serial.println(switchedArray[4]);
 
-  
+        
+    intermidiateprint=1;
+  }
+
+
     
- }
+      
+  }
 
 
 }
