@@ -6,14 +6,15 @@
 #define INDUCTOR 4
 #define DIODE 5
 
-void bubSort(int *arrToSort);
-void gettingValues(int *aquiredArray);
+void bubSort(int arrToSort[5]);
+void gettingValues(int aquiredArray[5]);
 
 int unswitchedArray[5];
 int switchedArray[5];
 int unswitchedSort[5];
 int switchedSort[5]; // array holding the buble sorted value
 int i = 0;
+int done = 0;
 
 RelayBoard relays(3, 4, 5, 6, 7, 8); // what relay numbers will be used
 
@@ -36,84 +37,117 @@ void setup() // the setup for the program
 
 void loop() // the infinite loop
 {
+  while (done != 1) {
   gettingValues(unswitchedArray);
+  Serial.println("");
+  Serial.println("Switching polarity.");
+  Serial.println("");
   relays.switchpolarity();
   gettingValues(switchedArray);
 
-  Serial.println("\n");
-
-  Serial.println("Printing the unswitched array:\n");
-  for (i = 0; i < 5; i++) {
-    Serial.println(unswitchedArray[0]);
-  }
-
-  Serial.println("Printing the switched array:\n");
-  for (i = 0; i < 5; i++) {
-    Serial.println(switchedArray[i]);
-  }
-
-  memcpy(unswitchedSort, unswitchedArray, 5 * sizeof(int));
-  bubSort(unswitchedSort);
-
-  memcpy(switchedSort, switchedArray, 5 * sizeof(int));
-  bubSort(switchedSort);
-
-  Serial.println("Printing the sorted unswitched array:\n");
-  for (i = 0; i < 5; i++) {
-    Serial.println(unswitchedSort[i]);
-  }
-
-  Serial.println("Printing the sorted switched array:\n");
-  for (i = 0; i < 5; i++) {
-    Serial.println(switchedSort[i]);
-  }
-
-  // finding the wire in the haystack
-  for (i = 0; i < 5; i++) {
-    if (unswitchedArray[i] == unswitchedSort[0])
-      unswitchedArray[i] = CAPACITOR;
-    else if (unswitchedArray[i] == unswitchedSort[1])
-      unswitchedArray[i] = RESISTOR;
-    else if (unswitchedArray[i] == unswitchedSort[2])
-      unswitchedArray[i] = DIODE;
-    else if (unswitchedArray[i] == unswitchedSort[3])
-      unswitchedArray[i] = INDUCTOR;
-    else if (unswitchedArray[i] == unswitchedSort[4])
-      unswitchedArray[i] = WIRE;
-  }
-
-  Serial.println("Printing out the final unswitched array:\n");
+  Serial.println("");
+  
+  Serial.println("Printing the unswitched array:");
   for (i = 0; i < 5; i++) {
     Serial.println(unswitchedArray[i]);
   }
 
+  Serial.println("");
+
+  Serial.println("Printing the switched array:");
   for (i = 0; i < 5; i++) {
-    if (switchedArray[i] == switchedSort[0])
-      switchedArray[i] = WIRE;
-    else if (switchedArray[i] == switchedSort[1])
-      switchedArray[i] = INDUCTOR;
-    else if (switchedArray[i] == switchedSort[2])
-      switchedArray[i] = RESISTOR;
-    else if (switchedArray[i] == switchedSort[3])
-      switchedArray[i] = CAPACITOR;
-    else if (switchedArray[i] == switchedSort[4])
-      switchedArray[i] = DIODE;
+    Serial.println(switchedArray[i]);
   }
 
-  Serial.println("Printing out the final switched array:\n");
+  Serial.println("");
+
+  memcpy(unswitchedSort, unswitchedArray, 5 * sizeof(int));
+
+  Serial.println("Printing the to be sorted unswitched array:");
+  for (i = 0; i < 5; i++) {
+    Serial.println(unswitchedSort[i]);
+  }
+
+  Serial.println("");
+  
+  bubSort(unswitchedSort);
+
+  memcpy(switchedSort, switchedArray, 5 * sizeof(int));
+
+  Serial.println("Printing the to be sorted switched array:");
   for (i = 0; i < 5; i++) {
     Serial.println(switchedSort[i]);
   }
 
-  return;
+  Serial.println("");
+  
+  bubSort(switchedSort);
+
+  Serial.println("Printing the sorted unswitched array:");
+  for (i = 0; i < 5; i++) {
+    Serial.println(unswitchedSort[i]);
+  }
+
+  Serial.println("");
+
+  Serial.println("Printing the sorted switched array:");
+  for (i = 0; i < 5; i++) {
+    Serial.println(switchedSort[i]);
+  }
+
+  Serial.println("");
+
+  // finding the wire in the haystack
+  for (i = 0; i < 5; i++) {
+    if (unswitchedArray[i] == unswitchedSort[0])
+      unswitchedArray[i] = WIRE;
+    if (unswitchedArray[i] == unswitchedSort[1])
+      unswitchedArray[i] = CAPACITOR;
+    if (unswitchedArray[i] == unswitchedSort[2])
+      unswitchedArray[i] = INDUCTOR;
+    if (unswitchedArray[i] == unswitchedSort[3])
+      unswitchedArray[i] = RESISTOR;
+    if (unswitchedArray[i] == unswitchedSort[4])
+      unswitchedArray[i] = DIODE;
+  }
+
+  Serial.println("Printing out the final unswitched array:");
+  for (i = 0; i < 5; i++) {
+    Serial.println(unswitchedArray[i]);
+  }
+
+  Serial.println("");
+  
+  for (i = 0; i < 5; i++) {
+    if (switchedArray[i] == switchedSort[0])
+      switchedArray[i] = RESISTOR;
+    if (switchedArray[i] == switchedSort[1])
+      switchedArray[i] = DIODE;
+    if (switchedArray[i] == switchedSort[2])
+      switchedArray[i] = INDUCTOR;
+    if (switchedArray[i] == switchedSort[3])
+      switchedArray[i] = CAPACITOR;
+    if (switchedArray[i] == switchedSort[4])
+      switchedArray[i] = WIRE;
+  }
+
+  Serial.println("Printing out the final switched array:");
+  for (i = 0; i < 5; i++) {
+    Serial.println(switchedArray[i]);
+  }
+
+  Serial.println("");
+    
+done = 1;
+}
 }
 
-void bubSort(int *arrToSort) {
+void bubSort(int arrToSort[5]) {
   int count, temp;
 
-  for (count = 0; count < 10; count++) {
-    for (i = 0; i < 5; i++) {
-      if (arrToSort[i] < unswitchedSort[i + 1]) { // swap the two elements
+  for (count = 0; count < 4; count++) {
+    for (i = 0; i < 5 - count - 1; i++) {
+      if (arrToSort[i] < arrToSort[i + 1]) { // swap the two elements
         temp = arrToSort[i];
         arrToSort[i] = arrToSort[i + 1];
         arrToSort[i + 1] = temp;
@@ -122,15 +156,16 @@ void bubSort(int *arrToSort) {
   }
 }
 
-void gettingValues(int *aquiredArray) {
+void gettingValues(int aquiredArray[5]) {
   for (i = 0; i < RelayBoard::PINS;
        i++) { // the begining of the for loop dets i to n integer
     relays.select(
         i); // select the relays that are enabled( does it cycle threw here?)
     delay(3000);                       // pauses code for 3 seconds
     read_value(i, &readings, &relays); // enter the value from the pins struct?
-    Serial.print("Reading from %d:",
-                 i); // prints the comment in serial data printout
+    Serial.print("Reading from "); // prints the comment in serial data printout
+    Serial.print(i);
+    Serial.print(":");
     Serial.println(readings.values[i] * (5.0 / 1023.0)); // Prints the valueof
                                                          // the reading from a
                                                          // pin then changes
